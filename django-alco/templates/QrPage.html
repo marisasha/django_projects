@@ -1,0 +1,12 @@
+{% extends "components/base.html" %}
+
+{% block title%}QR Code{% endblock title%}
+
+{% block main %}
+{% load static %}
+
+<div class="m-20">
+    <img src="{% static product.images.url %}" alt="">
+</div>
+
+{% endblock main %} 

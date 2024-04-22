@@ -1,0 +1,25 @@
+{% extends "components/base.html" %}
+{% block title%}Список товаров{% endblock title%}
+
+{% block main %}
+
+{% load static %}
+
+<div class="flex flex-col gap-y-3 m-10">
+    <span class="text-xl text-slate-200 font-bold">Чаты:</span>
+    {% for room in rooms %}
+        {% for user in room.users.all %}
+            {% if user != request.user %}
+            <a href="{% url 'chat' room.slug user.id%}">
+                <div class="flex gap-x-5">
+                    <img src="{% static user.profile.avatar.url %}" alt="" class="round-imag"> </a>
+                    <span class="text-sm text-slate-100 font-semibold">{{ user.profile.name }} {{ user.profile.surname }}</span></a>                       
+                </div>
+            </a>
+                <hr>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</div>
+
+{% endblock main %} 

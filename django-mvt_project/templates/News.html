@@ -1,0 +1,41 @@
+{% extends "components/base.html" %}
+{% block title%}Список товаров{% endblock title%}
+
+{% block main %}
+
+{% load static %}
+
+
+<form class="flex flex-col gap-y-5 mt-10 mx-20 justify-center" method="POST" action="{% url 'new_post' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="flex">
+        <textarea type="text" name="content" placeholder="Что у вас нового ?" class='border border-3 rounded-s-lg border-gray-950 bg-gray-900 text-slate-100 w-10/12 h-20 p-2  ' required></textarea>
+        <div class="flex flex-col">
+            <label class="input-file">
+                <input type="file" name="image" accept="image/*">		
+                <span>Выберите файл</span>
+        </label>
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold py-0.5 px-3 rounded-br-lg w-34 h-10">Опубликовать</button>
+        </div>
+    </div>
+</form>
+
+<div class="mt-10">  
+{% for news in now_user_news %}
+<div class="flex flex-col gap-y-5 bg-gray-900 rounded-lg mx-20 mb-5 p-5"> 
+    <div class="flex gap-x-10">
+        <img src="{% static news.user.profile.avatar.url %}" alt="упс" class="round-imag">
+        <div class="flex flex-col gap-y-1 justify-center">
+            <span class="text-l text-slate-100 font-semibold">{{ news.user.profile.name }}</span>
+            <span class="text-l text-slate-100 font-semibold">{{ news.date|date:"d M" }} в {{ news.date|date:"H:i" }}</span>
+        </div>
+    </div>
+    <span class="text-2xl text-slate-100 font-semibold">{{ news.content }}</span>
+    {% if news.image %}
+    <img src="{% static news.image.url %}" alt="" class="w-1/2 h-auto">
+    {% endif %}
+</div>
+{% endfor %}
+</div>
+<script src="/static/css_js/js.js"></script>
+{% endblock main %} 

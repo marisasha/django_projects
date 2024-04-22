@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css_js/css.css" />
+    <link rel="stylesheet" href="/static/css_js/css2.css" />
+    <title>{% block title%}{% endblock title%}</title>
+</head>
+<body class="bg-gray-950">
+    {% include "components/header.html" %}
+    <div class=" flex mx-80 mt-48 gap-x-2 ">
+        {% include "components/navbar.html" %}
+        <div class=" border bg-gray-800 border-3 border-gray-900 rounded w-full pb-40">
+            {% block main%} {% endblock main%}
+        </div>
+    </div>  
+</body>
+</html>

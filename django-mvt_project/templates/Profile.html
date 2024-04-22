@@ -1,0 +1,50 @@
+{% extends "components/base.html" %}
+
+{% block title%}{{request.user.profile.name}} {{request.user.profile.surname}}{% endblock title%}
+
+{% block main %}
+{% load static %}
+
+    <div class=" flex gap-x-5 mt-10 mx-20 mb-20">
+        <img src="{% static user.profile.avatar.url %}" alt="" class="circle-photo"> 
+        <div class="flex flex-col gap-y-1 justify-center">
+            <span class="text-2xl text-slate-100 font-semibold">{{user.profile.name}} {{user.profile.surname}}</span>
+            <span class="text-xl text-slate-200 font-semibold ml-10">О себе: {{user.profile.description}}</span>
+        </div>
+    </div>
+
+    {% if is_user_in_application_to_user_for_page_user %}
+        <div class="flex flex-row-reverse mx-10">
+            <a href="{% url 'application_to_user' user.id %}" class="flex items-center justify-center bg-slate-200 hover:bg-slate-100 text-indigo-500 text-sm font-bold py-0.5 px-3 rounded-lg w-3/12 h-12">Заявка отправлена</a>
+        </div>
+    {% elif is_user_in_application_to_user_for_now_user %}
+        <div class="flex flex-row-reverse mx-10">
+            <a href="{% url 'accept_application_to_user' user.id %}" class="flex items-center justify-center bg-slate-200 hover:bg-slate-100 text-indigo-500 text-sm font-bold py-0.5 px-3 rounded-lg w-3/12 h-12">Принять заявку</a>
+        </div>
+    {% elif is_now_user_and_page_user_friends %}
+        <div class="flex flex-row-reverse gap-x-5 mx-10">
+            <a href="{% url 'get_or_create_chat' user.id %}" class="flex items-center justify-center bg-slate-200 hover:bg-slate-100 text-indigo-500 text-sm font-bold py-0.5 px-3 rounded-lg w-3/12 h-12">Написать сообещние</a>
+            <a class="flex items-center justify-center bg-slate-200 hover:bg-slate-100 text-indigo-500 text-sm font-bold py-0.5 px-3 rounded-lg w-3/12 h-12">Вы друзья</a>
+        </div>  
+    {% else %}
+        <div class="flex flex-row-reverse mx-10">
+            <a href="{% url 'application_to_user' user.id %}" class="flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold py-0.5 px-3 rounded-lg w-3/12 h-12">Добавить в друзья</a>
+        </div>
+    {% endif %}
+
+        <div class="flex flex-col gap-y-5 mt-10 mx-20 mb-20 ">
+            <span class="text-xl text-slate-200 font-bold">Друзья:</span>
+            <div class="flex items-center gap-x-10">
+            <div class="flex items-center gap-x-10">
+                {% for friend in user_friends %}
+                    {% for user in friend.friends.all %}
+                            <div class="flex flex-col items-center gap-y-2">
+                                <img src="{% static user.profile.avatar.url %}" alt="" class="round-image"> 
+                                <span class="text-sm text-slate-100 font-semibold">{{ user.profile.name }}</span>
+                            </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+    </div>
+</div>
+{% endblock main %} 

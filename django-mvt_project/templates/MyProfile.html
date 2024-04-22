@@ -1,0 +1,50 @@
+{% extends "components/base.html" %}
+
+{% block title%}{{request.user.profile.name}} {{request.user.profile.surname}}{% endblock title%}
+
+{% block main %}
+{% load static %}
+
+    <div class=" flex gap-x-5 mt-10 mx-20 mb-20">
+        <img src="{% static request.user.profile.avatar.url %}" alt="" class="circle-photo">
+        <div class="flex flex-col gap-y-1 justify-center">
+            <span class="text-2xl text-slate-100 font-semibold">{{request.user.profile.name}} {{request.user.profile.surname}}</span>
+            <span class="text-xl text-slate-200 font-semibold ml-10">О себе: {{request.user.profile.description}}</span>
+        </div>
+    </div>
+    
+    <div class="flex flex-col gap-y-5 mt-10 mx-20 mb-20 ">
+        <span class="text-xl text-slate-200 font-bold">Друзья:</span>
+        <div class="flex items-center gap-x-10">
+            <div class="flex items-center gap-x-10">
+            {% for friend in friends %}
+                {% for user in friend.friends.all %}
+                        <div class="flex flex-col items-center gap-y-2">
+                            <a href="{% url 'profile' user.id %}"><img src="{% static user.profile.avatar.url %}" alt="" class="round-image"> </a>
+                            <a href="{% url 'profile' user.id %}"><span class="text-sm text-slate-100 font-semibold">{{ user.profile.name }}</span></a>
+                        </div>
+                {% endfor %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <span class="text-xl text-slate-200 font-bold ml-20">Все записи пользователя:</span>
+    <div class="mt-20">
+        {% for news in now_user_news %}
+        <div class="flex flex-col gap-y-5 bg-gray-900 rounded-lg mx-20 mb-5 p-5"> 
+            <div class="flex gap-x-10">
+                <img src="{% static news.user.profile.avatar.url %}" alt="упс" class="round-imag">
+                <div class="flex flex-col gap-y-1 justify-center">
+                    <span class="text-l text-slate-100 font-semibold">{{ news.user.profile.name }}</span>
+                    <span class="text-l text-slate-100 font-semibold">{{ news.date|date:"d M" }} в {{ news.date|date:"H:i" }}</span>
+                </div>
+            </div>
+            <span class="text-2xl text-slate-100 font-semibold">{{ news.content }}</span>
+            {% if news.image %}
+            <img src="{% static news.image.url %}" alt="" class="w-1/2 h-auto">
+            {% endif %}
+        </div>
+        {% endfor %}
+        </div>
+{% endblock main %} 

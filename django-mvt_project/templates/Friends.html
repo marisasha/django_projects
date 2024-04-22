@@ -1,0 +1,75 @@
+{% extends "components/base.html" %}
+
+{% block title%}Friends{% endblock title%}
+
+{% block main %}
+{% load static %}
+
+
+
+<form class="flex flex-col gap-y-5 mt-10 mx-10" method="POST" action="{% url 'find_friends' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="flex">
+        <input type="text" name="search" id="" class='border border-3 rounded-s-lg border-gray-950 w-11/12 h-10 pl-5 ' required>
+        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold py-0.5 px-3 rounded-e-lg w-36 h-10">Найти друзей</button>
+    </div>
+
+
+</form>
+
+<div class="flex flex-col gap-y-5 mt-10 mx-20 mb-20 ">
+        {% if request.method == "GET"%}
+            {% if applications_to_friend.count > 0 %}
+            <span class="text-xl text-slate-200 font-bold">Запросы в друзья:</span>
+            <div class="flex flex-col gap-y-3">
+                {% for application in applications_to_friend %}
+                    {% for user in application.application.all %}
+                            <div class="flex items-center gap-x-2">
+                                <a href="{% url 'profile' user.id %}"><img src="{% static user.profile.avatar.url %}" alt="" class="round-image"> </a>
+                                <a href="{% url 'profile' user.id %}"><span class="text-sm font-semibold">{{ user.profile.name }} {{ user.profile.surname }}</span></a>
+                                
+                            </div>
+                            {% if applications_to_friend.count > 1 %}
+                            <hr class="bg-white">
+                            {% endif%}
+                    {% endfor %}
+                {% endfor %} 
+            </div>
+            {% endif %}
+            <span class="text-xl text-slate-200 font-bold">Друзья:</span>
+            <div class="flex flex-col gap-y-3">
+                {% for friend in friends %}
+                    {% for user in friend.friends.all %}
+                            <div class="flex items-center gap-x-2">
+                                <a href="{% url 'profile' user.id %}"><img src="{% static user.profile.avatar.url %}" alt="" class="round-image"> </a>
+                                <a href="{% url 'profile' user.id %}"><span class="text-sm font-semibold">{{ user.profile.name }} {{ user.profile.surname }}</span></a>
+                                
+                            </div>
+                            <hr class="bg-white">
+                    {% endfor %}
+                {% endfor %} 
+            </div>
+        {% endif %}
+        {% if request.method == "POST"%}
+        <span class="text-xl text-slate-200 font-bold">Найдено:</span>
+        <div class="flex flex-col gap-y-3">
+            {% for user in users %}
+                        <div class="flex items-center gap-x-2">
+                            <a href="{% url 'profile' user.user.id %}"><img src="{% static user.avatar.url %}" alt="" class="round-image"> </a>
+                            <a href="{% url 'profile' user.user.id %}"><span class="text-sm font-semibold">{{ user.name }} {{ user.surname }}</span></a>
+                        </div>
+                        <hr class="bg-white">
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+
+
+
+
+
+
+
+{% endblock main %}
+
