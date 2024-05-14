@@ -1,0 +1,61 @@
+Book - сущность
+{"title": "Война и мир", "description": "Описание", "file": <MemoryUploadedFile>}
+
+"Книжный магазин"
+* Вывод всех книг
+(/api/book/?page=12&category=классика&sort=name_asc - GET)
+(/api/book/1 - GET - (slug_id / id) - )
+
+
+
+Шаблон проекта, дизайн
+Иерархия DOM (base>navbar-main(sidebar-content)-footer<base)
+Виртуальная маршрутизация
+Backend
+Веб-запрос
+REDUX (frontend) - передача состояний между компонентами
+Конструкторы
+Токены и доступ
+
+* Собственная система токенов
+* AuthGuard
+* рефреш
+* публикация книги
+
+Кэш (redis)
+PostgreSQL (database) - index [select * from books where time_published between now and now and title LIKE %%] explain
+
+Пагинация
+Сортировка
+Поиск
+Переход на конкретную книгу
+
+Заявка на добавление книги
+Детальная страница
+Категории
+Лайки
+Комментарии
+
+
+
+
+
+
+* Панель модератора контента, для внесение новых книг. (multipart-formdata)
+(/api/book/ - POST - {"title": "Война и мир", "description": "Описание", "file": <MemoryUploadedFile>})
+
+
+
+Собственная система токенов, причины:
+* Гибче и понимаем как работает
+* Упростить
+* Пример тестового озадания: "реализуйте систему с сущностью Токен, она связана m2m к сущности User, который связан Group"
+* Свой стек технологий (Golang), RPS (60% /api/token/..., 10%, 30%)
+
+/api/token/
+/api/token/verify/
+/api/token/refresh/
+/api/token/block/
+
+RAW SQL vs ORM
+Token, UserExtra, GroupExtra

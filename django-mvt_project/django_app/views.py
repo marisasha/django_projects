@@ -31,7 +31,7 @@ def register_2(request):
         user_surname = request.POST["surname"]
         user_description = request.POST.get("description","")
         user_avatar = request.FILES.get("avatar", None)
-        usr = models.Profile.objects.filter(user = user).first()
+        usr = models.Profile.objects.get(user = user)
         usr.name = user_name
         usr.surname = user_surname
         usr.description = user_description
