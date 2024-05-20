@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Отзывы</title>
+</head>
+<body>
+    
+
+    <div class="flex flex-col gap-y-9 bg-white rounded w-full mb-14 p-2 "> 
+        <span class="text-4xl text-gray-900 font-bold m-auto">Оставьте свой отзыв нашему Веб Сайту </span>
+        <hr>
+        <div class="flex items-center justify-center flex-col">
+            <form class="flex flex-col gap-y-5 mt-10 items-center" method="POST" action="{% url 'Feedback' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <textarea name="text" id="" cols="30" rows="10" placeholder="Ваш комментарий" class="border p-3 border-3 rounded-lg border-gray-950 w-96 h-28 resize-none" required></textarea>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold py-0.5 px-3 rounded w-52 h-9">Отправить</button>
+            </form>
+        </div>
+        <div class="flex items-start flex-col gap-y-8">
+            <span class="text-2xl text-gray-900 font-bold">Отзывы: </span>
+            {% for comment in comments %}
+                <div class="flex flex w-1/2">
+                    <img src="/static/media/startap_avatars/Noneavatar.jpg" alt="" class="w-20 h-20">
+                    <div class="flex flex-col justify-center">
+                        <span class="text-gray-900 pl-3"> {{ comment.created|date:"F, H:i"}}</span>
+                        <span class="text-lg text-gray-900 pl-3">{{ comment.text }}</span>
+                    </div>
+                </div>
+            {% empty %}
+                <span class="text-gray-900 font-bold">Ни одного комментария не найдено</span>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

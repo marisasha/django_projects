@@ -20,6 +20,7 @@ export default function Page() {
     name: "",
     surname: "",
     number: "",
+    status:"Начинающий предприниматель",
     avatar: null
   });
 
@@ -27,11 +28,13 @@ export default function Page() {
     event.preventDefault();
 
     if (!userRegister2.load) {
+      console.log(form)
       const formData = new FormData();
       formData.append('username', username);
       formData.append('name', form.name);
       formData.append('surname', form.surname);
       formData.append('number', form.number);
+      formData.append('status', form.status);
       //@ts-ignore
       formData.append('avatar', form.avatar);
       
@@ -52,6 +55,11 @@ export default function Page() {
     setForm({ ...form, avatar: file });
     console.log(form.avatar)
   };
+  const handleStatusChange = (event:any) => {
+    const status  = event.target.value;
+    setForm({ ...form, status: status });
+    
+};
 
   // TODO useEffect //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,7 +117,15 @@ export default function Page() {
                       />
                     </div>
                   </div>
-                  
+                  <div>
+                      <label className="block text-sm font-semibold leading-6 text-slate-50">Ваш статус: </label>
+                      <select onChange={handleStatusChange} className="block w-96 rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-gray-300 ext-slate-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-s sm:leading-6 p-2">
+                            <option value="Начинающий предприниматель">Начинающий предприниматель</option>
+                            <option value="Предпринимаатель с опытом">Предприниматель с опытом</option>
+                            <option value="Бизнесмен">Бизнесмен</option>
+                            <option value="Инвестор">Инвестор</option>
+                      </select>
+                  </div>
                   <article>
                     <loaders.Loader1 isView={userRegister2.load} />
                     {userRegister2.error && (

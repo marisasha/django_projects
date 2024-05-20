@@ -9,6 +9,7 @@ import * as constants from "../components/constants";
 import * as store from "../components/store";
 import * as loaders from "../components/loaders";
 import * as utils from "../components/utils";
+import axios from "axios";
 
 
 export default function Page() {
@@ -16,6 +17,7 @@ export default function Page() {
   const dispatch = useDispatch();
   const userProfile = useSelector((state: any) => state.userProfile);
   const username = utils.LocalStorage.get('username')
+  const [hasFetched, setHasFetched] = useState(false);
   
   
   async function getProfile() {
@@ -28,12 +30,27 @@ export default function Page() {
       );
     }
   }
+  //@ts-ignore
+  const deleteObject = async (id) => {
+    try {
+      const response = await axios.delete(`http://127.0.0.1:8000/api/startap/delete/${id}`);
+      setHasFetched(false)
+    } catch (error) {
+      console.error('There was an error deleting the object!', error);
+    }
+  };
 
 
   useEffect(() => {
     getProfile();
   }, []);
 
+  useEffect(() => {
+    if (!userProfile.load && userProfile && userProfile.data && !hasFetched) {
+      getProfile();
+      setHasFetched(true);
+    }
+  }, [hasFetched]);
 
   return (
     <bases.Base1>
@@ -62,14 +79,14 @@ export default function Page() {
                           </div>
                             <div className="flex-col flex gap-y-2 justify-center">
                               <div className="flex gap-x-2">
-                                <span className="text-xl text-slate-50 font-semibold">{userProfile.data.name}</span>
-                                <span className="text-xl text-slate-50 font-semibold">{userProfile.data.surname}</span>
+                                <span className="text-lg text-slate-50 font-semibold">{userProfile.data.name}</span>
+                                <span className="text-lg text-slate-50 font-semibold">{userProfile.data.surname}</span>
                               </div>
-                              <span className="text-xl text-slate-50 font-semibold">Предприниматель</span>
+                              <span className="text-lg text-slate-50 font-semibold">{userProfile.data.status}</span>
                             </div>
                             <div className="flex flex-col justify-center items-center">
-                              <span className="text-xl text-slate-50 font-semibold">Зарегистрирован:</span>
-                              <span className="text-xl text-slate-50 font-semibold ">
+                              <span className="text-lg text-slate-50 font-semibold">Зарегистрирован:</span>
+                              <span className="text-lg text-slate-50 font-semibold ">
                                 {userProfile.data.data_register &&
                                   new Date(userProfile.data.data_register).toLocaleDateString('ru-RU', {
                                     day: 'numeric',
@@ -85,29 +102,29 @@ export default function Page() {
                                 <span className="text-xl text-slate-50 font-semibold"> номер:</span>
                               </div>
                               <span className="text-xl text-slate-50 font-semibold">{userProfile.data.number}</span>
-
                             </div>
                         </div>
+                        <Link to = "/profile/change" className="flex w-28 justify-center rounded-md bg-orange-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ">Изменить</Link>
                         <div className="flex flex-col gap-y-4 mt-10">
                           <h3 className="text-3xl font-bold leading-9 tracking-tight text-slate-50 ">Ваши проекты:</h3>
-                          <div className="flex flex-col gap-y-5">
-                            {!userProfile.load ? userProfile.data.startap.map((item: any, index: number) => (
-                                  <div key = {item.id} className="rounded text-slate-800 mt-10 mr-10 shadow-xl">
-                                    <Link to ={`/category/${item.category_slug}/${item.id}`} className= {`category flex  bg-slate-50 rounded w-11/12 h-80 `} >
-                                      <img src={`/static${item.image}`} alt="" className="w-6/12 h-auto "/>
-                                      <div className="flex flex-col ml-3">
-                                        <span className="text-slate-900 text-3xl font-bold "> {item.title} </span>
-                                        <span className="text-slate-500 text-l font-bold "> {item.category_title}  </span>
-                                        <div>
-                                          <i className ="fa-sharp fa-solid fa-location-dot bg-red "></i>
-                                          <span className="text-slate-900 text-lg font-bold "> {item.location} </span>
-                                        </div> 
+                            <div className="flex flex-col gap-y-5">
+                              {!userProfile.load ? userProfile.data.startap.map((item: any, index: number) => (
+                                    <div key = {item.id} className="rounded text-slate-800 mt-10 mr-10 shadow-xl">
+                                      <Link to ={`/category/${item.category_slug}/${item.id}`} className= {`category flex  bg-slate-50 rounded w-11/12 h-80 `} >
+                                        <img src={`/static${item.image}`} alt="" className="w-6/12 h-auto "/>
+                                        <div className="flex flex-col ml-3">
+                                          <span className="text-slate-900 text-3xl font-bold "> {item.title} </span>
+                                        </div>
+                                      </Link>
+                                      <div key = {item.id}className="flex gap-x-3">
+                                        <button  onClick={() => deleteObject(item.id)}type="submit" className="flex w-28 justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ">Удалить</button>
                                       </div>
-                                    </Link>
                                     </div>
                                   ))
-                                  : ""}
-                          </div>
+                                  : 
+                                  <h3 className="text-xl font-bold leading-9 tracking-tight text-slate-50">У вас пока нет проектов </h3>
+                                }
+                            </div>
                         </div>
                     </div>
                   </div>

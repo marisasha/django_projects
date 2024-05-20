@@ -8,3 +8,4 @@ admin.site.register(models.CategoryStartap)
 admin.site.register(models.FilesStartap)
 admin.site.register(models.LikeStartap)
 
+

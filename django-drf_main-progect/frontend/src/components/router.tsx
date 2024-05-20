@@ -13,6 +13,7 @@ import StartapList from "../pages/StartapList";
 import StartapDetail from "../pages/StartapDetail";
 import StartapCreate from "../pages/StartapCreate";
 import Profile from "../pages/Profile";
+import ChangeProfile from "../pages/ChangeProfile"
 
 // notes
 
@@ -31,6 +32,7 @@ export default function Router() {
         {/* book */}
         <Route path={"category/:slug"} element={<StartapList />}></Route>
         <Route path={"profile/"} element={<Profile />}></Route>
+        <Route path={"profile/change"} element={<ChangeProfile />}></Route>
         <Route path={"category/:slug/:id"} element={<StartapDetail />}></Route>
         <Route path={"create/"} element={<StartapCreate />}></Route>
 

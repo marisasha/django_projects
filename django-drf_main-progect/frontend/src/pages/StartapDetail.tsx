@@ -113,7 +113,7 @@ export default function Page() {
                                     <span className="text-xl text-gray-900 font-semibold">{startapDetail.data.profile.name}</span>
                                     <span className="text-xl text-gray-900 font-semibold">{startapDetail.data.profile.surname}</span>
                                   </div>
-                                  <span className="text-xl text-gray-900 font-semibold">Предприниматель</span>
+                                  <span className="text-xl text-gray-900 font-semibold">{startapDetail.data.profile.status}</span>
                                 </div>
                             </div>
                         </div>

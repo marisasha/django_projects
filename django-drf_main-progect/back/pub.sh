@@ -18,6 +18,7 @@ python -V
 pip install django gunicorn
 pip install -r requirments.txt
 ip a
+python manage.py runserver 0.0.0.0:8000
 django-admin startproject django_settings .
 # http://37.18.88.14:8000/
 nano django_settings/settings.py
@@ -95,7 +96,7 @@ exit
 ########################################################################################################################
 GUNICORN
 ########################################################################################################################
-# sudo rm /etc/systemd/system/gunicorn.socket
+sudo rm /etc/systemd/system/gunicorn.socket
 sudo nano /etc/systemd/system/gunicorn.socket
 <file>
 [Unit]
@@ -109,6 +110,7 @@ WantedBy=sockets.target
 </file>
 
 # sudo rm /etc/systemd/system/gunicorn.service
+sudo rm /etc/systemd/system/gunicorn.service
 sudo nano /etc/systemd/system/gunicorn.service
 <file>
 [Unit]
@@ -170,16 +172,16 @@ server {
 listen 80;
 listen [::]:80;
 
-server_name 194.67.82.59 kgp.lol www.kgp.lol;
+server_name 37.18.88.14;
 
 root /home/ubuntu/web;
 
 location /.well-known/acme-challenge/ {}
 
-location / {
-    return 301 https://$server_name$request_uri;
-}
-}
+# location / {
+#     return 301 https://$server_name$request_uri;
+# }
+# }
 </file>
 sudo ln -s /etc/nginx/sites-available/web-http.conf /etc/nginx/sites-enabled/web-http.conf
 sudo service nginx start

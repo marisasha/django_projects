@@ -1,5 +1,8 @@
 import datetime
-from django.shortcuts import render
+from django.http import HttpRequest
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views import View
 from rest_framework.decorators import api_view , permission_classes
 from rest_framework.permissions import AllowAny, IsAdminUser , IsAuthenticated
 from rest_framework.request import Request
@@ -94,6 +97,7 @@ def api_create_profile(request: Request) -> Response:
         _name = str(request.data.get("name", None))
         _surname = str(request.data.get("surname", None))
         _number = str(request.data.get("number", None))    
+        _status = str(request.data.get("status", ""))    
         _avatar = request.FILES.get("avatar", None)
         _user = User.objects.get(username = _username)
         usr = models.Profile.objects.get(user = _user)
@@ -101,10 +105,39 @@ def api_create_profile(request: Request) -> Response:
         usr.name = _name
         usr.surname = _surname
         usr.number = _number
+        usr.status = _status
         if _avatar:
             usr.avatar = _avatar
         usr.save()
         return Response(data={"success": "Account successfully created!"}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response(data={"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(http_method_names=["POST"])
+@permission_classes([AllowAny])
+def api_change_profile(request: Request) -> Response:
+    try:
+        _username = str(request.data.get("username",None))
+        _name = str(request.data.get("name", None))
+        _surname = str(request.data.get("surname", None))
+        _number = str(request.data.get("number", None))    
+        _status = str(request.data.get("status", ""))    
+        _avatar = request.FILES.get("avatar", None)
+        _user = User.objects.get(username = _username)
+        usr = models.Profile.objects.get(user = _user)
+        if _name:
+            usr.name = _name
+        if _surname:
+            usr.surname = _surname
+        if _number:
+            usr.number = _number
+        if _status:
+            usr.status = _status
+        if _avatar:
+            usr.avatar = _avatar
+        usr.save()
+        return Response(data={"success": "Account successfully changed!"}, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response(data={"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -193,3 +226,16 @@ def api_create_like(request: Response,startap_id:int,username:str) -> Response:
             },
             status=status.HTTP_200_OK
         )
+
+@api_view(http_method_names=["DELETE"])
+@permission_classes([AllowAny])  
+def api_delete_startap(request: Request,id : int) -> Response:
+    _startap = models.Startap.objects.get(id = id)
+    _startap.delete()
+    return Response(
+            data={
+                "message":"Startap has been delete!"
+            },
+            status=status.HTTP_200_OK
+        )
+

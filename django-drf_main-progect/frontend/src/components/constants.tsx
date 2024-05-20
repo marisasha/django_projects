@@ -19,6 +19,5 @@ export const bookDelete = constructorConstant("bookDelete");
 export const userRegister = constructorConstant("userRegister");
 export const userRegister2 = constructorConstant("userRegister2");
 export const userLogin = constructorConstant("userLogin");
-export const userDetail = constructorConstant("userDetail");
 export const userUpdate = constructorConstant("userUpdate");
 export const userProfile = constructorConstant("userProfile");

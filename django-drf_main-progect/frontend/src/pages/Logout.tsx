@@ -17,7 +17,7 @@ export default function Page() {
   useEffect(() => {
     dispatch({ type: constants.userLogin.reset });
     dispatch({ type: constants.userRegister.reset });
-    dispatch({ type: constants.userDetail.reset });
+    dispatch({ type: constants.userProfile.reset });
 
     utils.LocalStorage.remove("userLogin.data.access");
     utils.LocalStorage.remove("userLogin.data.refresh");

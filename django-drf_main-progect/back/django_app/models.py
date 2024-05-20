@@ -40,6 +40,16 @@ class Profile(models.Model):
         max_length=50
     )
 
+    status = models.CharField(
+        verbose_name = "Статус",
+        editable=True,
+        blank=True,
+        null = True,
+        default = "Начинающий предприниматель",
+        max_length=50
+        
+    )
+
     number = models.CharField(
         verbose_name = "Номер",
         db_index = True,
@@ -190,7 +200,7 @@ class Startap(models.Model):
         max_length=50,
     )
 
-    deposit_amount = models.PositiveIntegerField(
+    deposit_amount = models.PositiveBigIntegerField(
         verbose_name="Сумма вклада",
         db_index=True,
         primary_key=False,
@@ -313,3 +323,41 @@ class LikeStartap(models.Model):
 
     def __str__(self):
         return f"<LikeStartap[{self.id}]({self.author})/>"
+    
+class Commentssite(models.Model):
+    text = models.TextField(
+        verbose_name="Текст комментария",
+        db_index=False,
+        primary_key=False,
+        unique=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default="",
+    )
+    created = models.DateTimeField(
+        verbose_name="дата и время создания",
+        db_index=True,
+        primary_key=False,
+        unique=False,
+        editable=True,
+        blank=True,
+        null=False,
+        default=timezone.now,
+        max_length=300,
+    )
+    is_active = models.BooleanField(
+        verbose_name="Активность",
+        null=False,
+        default=True,
+    )
+
+    class Meta:
+        app_label = "django_app"
+        ordering = ("-created",)
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+    def __str__(self):
+        return f"<Comment({self.id})/>"
+    

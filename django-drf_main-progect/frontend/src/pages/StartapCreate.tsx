@@ -19,7 +19,7 @@ export default function Page() {
     const username = utils.LocalStorage.get('username')
     const [form, setForm] = useState({
         username: username,
-        category: 10,
+        category: "1",
         title: "",
         description: "",
         location: "",
