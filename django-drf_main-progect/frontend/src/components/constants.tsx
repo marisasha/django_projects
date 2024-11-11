@@ -2,7 +2,7 @@
 import { constructorConstant } from "../components/components";
 
 export const isDebug = true; // TODO - найти способ, автоматически
-export const host = "http://37.18.88.14:8000/";
+export const host = "http://127.0.0.1:8000";
 
 // book
 export const categoryList = constructorConstant("categoryList");

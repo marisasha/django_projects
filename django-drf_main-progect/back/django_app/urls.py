@@ -28,6 +28,5 @@ urlpatterns = [
     path("api/startap/delete/<int:id>",view=views.api_delete_startap),
     path("api/change/profile",view=views.api_change_profile),
 
-    path('comments/', views.CommentsWebSite.as_view(), name='Feedback'),
 
 ]
